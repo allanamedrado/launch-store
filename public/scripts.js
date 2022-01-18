@@ -117,5 +117,16 @@ const PhotosUpload = {
         PhotosUpload.input.files = PhotosUpload.getAllFiles()
 
         photoDiv.remove();
+    },
+    removeOldPhoto(event) {
+        const photoDiv = event.target.parentNode
+        if(photoDiv.id) {
+            const removedFiles = document.querySelector('input[name]="removed_files"')
+            if(removedFiles){
+                removedFiles.value += `${photoDiv.id},` //concatenar o valor com a div, quando clicar coloca a string 1,2,3 sempre que clicar
+
+            }
+        }
+        photoDiv.remove()
     }
 }

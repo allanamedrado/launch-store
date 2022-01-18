@@ -3,7 +3,7 @@ const db = require('../../config/db')
 module.exports = {
     create(data) {
         const query = `
-            INSERT INTO products {
+            INSERT INTO products (
                 category_id,
                 user_id,
                 name,
@@ -12,7 +12,7 @@ module.exports = {
                 price,
                 quantity,
                 status
-            } VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
+            ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)
             RETURNING id
         `
         //R$ 1,00

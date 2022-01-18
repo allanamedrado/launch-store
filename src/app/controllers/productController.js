@@ -17,7 +17,7 @@ module.exports = {
     async post(req, res) {
         const keys = Object.keys(req.body)
 
-        for(key of keys) {
+        for(let key of keys) {
             if(req.body[key] == "") {
                 return res.send('Please, fill all fields!')
             }
@@ -28,10 +28,12 @@ module.exports = {
         } 
 
         let results = await products.create(req.body) 
+
         const productId = results.rows[0].id
         debugger;
+
         const filesPromise = req.files.map(fileItem => file.create({ ...fileItem, product_id: productId}))
-        await Promise.all(filesPromise).catch(error => console.log(error))
+        await Promise.all(filesPromise).catch(error => {console.log(error)})
         
         return res.redirect(`/products/${productId}/edit`)
     },
@@ -56,19 +58,34 @@ module.exports = {
         let files = results.rows
         files = files.map(file => ({
             ...file,
-            src: `${req.protocol}://${req.header.host}${file.path}`
+            src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
         }))
 
-        return res.render("products/edit.njk", {product, categories})
+        return res.render("products/edit.njk", {product, categories, files})
     
     },
     async put(req, res) {
         const keys = Object.keys(req.body)
 
-        for(key of keys) {
-            if(req.body[key] == "") {
+        for(let key of keys) {
+            if(req.body[key] == "" && key != "removed_files") {
                 return res.send('Please, fill all fields!')
             }
+        }
+
+        if(req.files.length !== 0) {
+            const newFilesPromise = req.files.map(files => file.create({...files, id: req.body.id}))
+            await Promise.all(newFilesPromise)
+        }
+
+        if (req.body.removed_files) {
+            //recebe como 1,2,3,
+            const removed_files = req.body.removed_files.split(",") //[1,2,3,]
+            const lastIndex = removed_files.length - 1
+            removed_files.splice(lastIndex, 1) //[1,2,3]
+
+            const removedFilesPromise = removed_files.map(files => file.delete(id))
+            await Promise.all(removedFilesPromise)
         }
 
         req.body.price = req.body.price.replace(/\D/g, "")
