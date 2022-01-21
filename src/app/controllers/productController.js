@@ -1,7 +1,7 @@
 const category = require('../models/category')
 const products = require('../models/product')
 const file = require('../models/file')
-const { formatPrice } = require('../../lib/date')
+const { formatPrice, date } = require('../../lib/date')
 
 module.exports = {
     async create(req, res) {
@@ -30,12 +30,35 @@ module.exports = {
         let results = await products.create(req.body) 
 
         const productId = results.rows[0].id
-        debugger;
 
         const filesPromise = req.files.map(fileItem => file.create({ ...fileItem, product_id: productId}))
         await Promise.all(filesPromise).catch(error => {console.log(error)})
         
         return res.redirect(`/products/${productId}/edit`)
+    },
+    async show(req, res) {
+        let results = await products.find(req.params.id)
+        const product = results.rows[0]
+
+        if (!product) return res.send("Product not found!")
+
+        const { day, hour, minutes, month } = date(product.updated_at)
+        
+        product.oldPrice = formatPrice(product.old_price)
+        product.price = formatPrice(product.price)
+
+        results = await products.files(product.id)
+        const files = results.rows.map(file => ({
+            ...file,
+            src: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`
+        }))
+
+        product.published = {
+            day: `${day}/${month}`,
+            hour: `${hour}h${minutes}`,
+        }
+        
+        return res.render("products/show", {product, files})
     },
     async edit(req, res) {
         let results = await products.find(req.params.id) 
@@ -74,7 +97,7 @@ module.exports = {
         }
 
         if(req.files.length !== 0) {
-            const newFilesPromise = req.files.map(files => file.create({...files, id: req.body.id}))
+            const newFilesPromise = req.files.map(files => file.create({...files, product_id: req.body.id}))
             await Promise.all(newFilesPromise)
         }
 
@@ -84,7 +107,7 @@ module.exports = {
             const lastIndex = removed_files.length - 1
             removed_files.splice(lastIndex, 1) //[1,2,3]
 
-            const removedFilesPromise = removed_files.map(files => file.delete(id))
+            const removedFilesPromise = removed_files.map(id => file.delete(id))
             await Promise.all(removedFilesPromise)
         }
 
@@ -97,7 +120,7 @@ module.exports = {
 
         await products.update(req.body)
 
-        return res.redirect(`/products/${req.body.id}/edit`)
+        return res.redirect(`/products/${req.body.id}`)
     },
     async delete(req, res) {
         await products.delete(req.body.id)
