@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700;900&display=swap');
-
 :root {
     --primary-color: #FD951F;
     --secondary-color: #1f6dfd;
@@ -565,4 +563,12 @@ form .item #photos-preview img {
 .form input[name="cpf_cnpj"],
 .form input[name="cep"] {
     max-width: 60%;
+}
+
+/*validate error*/
+
+.input .error {
+    padding: 4px;
+    border-radius: 4px;
+    color: #e74c3c;
 }

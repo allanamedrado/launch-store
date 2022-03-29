@@ -38,7 +38,7 @@ CREATE TABLE users (
   "name" text NOT NULL,
   "email" text UNIQUE NOT NULL,
   "password" text NOT NULL,
-  "cpf_cnpj" int UNIQUE NOT NULL,
+  "cpf_cnpj" text UNIQUE NOT NULL,
   "cep" text,
   "address" text,
   "created_at" timestamp DEFAULT (now()),
@@ -72,3 +72,17 @@ CREATE TRIGGER set_timestamp
 BEFORE UPDATE ON users
 FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp()
+
+
+
+--connect pg simple table
+CREATE TABLE "session" (
+  "sid" varchar NOT NULL COLLATE "default",
+  "sess" json NOT NULL,
+  "expire" timestamp(6) NOT NULL
+)
+WITH (OIDS=FALSE);
+
+ALTER TABLE "session" ADD CONSTRAINT "session_pkey" PRIMARY KEY ("sid") NOT DEFERRABLE INITIALLY IMMEDIATE;
+
+CREATE INDEX "IDX_session_expire" ON "session" ("expire");

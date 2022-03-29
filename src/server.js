@@ -2,10 +2,11 @@ const express = require('express')
 const nunjucks = require('nunjucks')
 const routes = require("./routes")
 const methodOverride = require('method-override')
+const session = require('./config/session')
 
 const server = express()
 
-
+server.use(session)
 server.use(express.urlencoded({extended: true})) //permite usar req.body
 server.use(methodOverride('_method'))
 server.use(express.static('public'))
