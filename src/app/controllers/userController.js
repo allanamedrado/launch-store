@@ -1,5 +1,6 @@
 const User = require('../models/user')
 const {formatCep, formatCpfCnpj } = require('../../lib/date')
+
 module.exports = {
     registerForm(req, res) {
         return res.render("user/register")
@@ -47,5 +48,22 @@ module.exports = {
                error
            })
        }
+    },
+    async delete(req, res) {
+        try {
+            await User.delete(req.body.id)
+
+            req.session.destroy()
+
+            return res.render("session/login", {
+                success: "Conta deletada! "
+            })
+        } catch (error) {
+            console.log(error)
+            return res.render("user/index", {
+                user: req.body,
+                error
+            })
+        }
     }
 }

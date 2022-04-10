@@ -13,8 +13,9 @@ module.exports = {
 
             async function getImage(productId) {
                 results = await products.files(productId)
-                const files = results.rows.map(file =>  `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`)
-
+                
+                const files = results.rows.map(file =>  ({ ...file, path: `${req.protocol}://${req.headers.host}${file.path.replace("public", "")}`}))
+                
                 return files[0]
             }
 
@@ -24,6 +25,8 @@ module.exports = {
                 product.price = formatPrice(product.price)
                 return product
             }).filter((product, index) => index > 2 ? false : true)
+
+            
 
             const lastAdded = await Promise.all(productsPromise)
 

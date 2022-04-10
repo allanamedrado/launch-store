@@ -5,9 +5,9 @@ module.exports = {
     create({filename, path, product_id}) {
         const query = `
             INSERT INTO files (
-                filename,
+                name,
                 path,
-                product_id,
+                product_id
             ) VALUES ($1, $2, $3)
             RETURNING id
         `
@@ -34,5 +34,13 @@ module.exports = {
             console.log(err)
         }            
         
+    },
+    async all() {
+        try {
+            const result = await db.query('SELECT * FROM files')
+            console.log(result)     
+        } catch (error) {
+            console.log(error)
+        }
     }
 }
