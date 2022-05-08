@@ -483,7 +483,8 @@ form .item #photos-preview img {
 }
 
 .shop .product .image {
-    padding-top: 55%;
+    width: 15em;
+    height: 15em;
     background-size: contain;
     background-position: center center;
     background-repeat: no-repeat;

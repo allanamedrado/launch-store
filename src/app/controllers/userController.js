@@ -1,5 +1,9 @@
+const { hash } = require('bcryptjs')
 const User = require('../models/user')
+const Product = require('../models/product')
+const fs = require('fs')
 const {formatCep, formatCpfCnpj } = require('../../lib/date')
+
 
 module.exports = {
     registerForm(req, res) {
@@ -14,8 +18,20 @@ module.exports = {
         return res.render("user/index", { user })
     },
     async post(req, res) {
+        let { name, email, password, cpf_cnpj, cep, address } = req.body
 
-        const userId = await User.create(req.body)
+        password = await hash(password, 8)
+        cpf_cnpj = cpf_cnpj.replace(/\D/g,""),
+        cep = cep.replace(/\D/g,"")
+
+        const userId = await User.create({
+            name,
+            email,
+            password,
+            cpf_cnpj,
+            cep,
+            address
+        })
 
         req.session.userId = userId //no req fica disponivel o session
 
@@ -51,12 +67,35 @@ module.exports = {
     },
     async delete(req, res) {
         try {
-            await User.delete(req.body.id)
+            //pegar todos os produtos do usuario
+            const products = await Product.findAll({
+                where: {user_id: req.body.id}
+            })
 
+            //pegar todas as imagens
+            const allFilesPromise = products.map(product => {
+                Product.files(product.id)
+            })
+
+            let promiseResults = await Promise.all(allFilesPromise)
+
+        //rodar a remoção do usuario no banco
+            await User.delete(req.body.id)
             req.session.destroy()
+        
+        //remover as imagens do sistema
+            promiseResults.map(result => {
+                result.map(file => {
+                    try {
+                        fs.unlinkSync(file.path)
+                    } catch (err) {
+                        console.log(err)
+                    }
+                })
+            })        
 
             return res.render("session/login", {
-                success: "Conta deletada! "
+                success: "Conta deletada!"
             })
         } catch (error) {
             console.log(error)

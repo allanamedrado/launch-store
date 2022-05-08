@@ -7,12 +7,12 @@
     <div class="items">
         {% for product in products %}
             <div class="product">                
-                <img class="image" src="{{product.img.path}}"> 
+                <img class="image" src="{{product.img}}"> 
                 
                 {%if product.oldPrice !== product.price %}
-                    <div class="old-price"> {{product.oldPrice}}</div>
+                    <div class="old-price"> {{product.formattedOldPrice}}</div>
                 {%endif%}
-                <p>{{product.price}}</p>
+                <p>{{product.formattedPrice}}</p>
                 <h4>{{product.name}}</h4>
 
                 <a class="button" href="/products/{{product.id}}">Ver produto</a>
