@@ -3,6 +3,7 @@ const User = require('../models/user')
 const Product = require('../models/product')
 const fs = require('fs')
 const {formatCep, formatCpfCnpj } = require('../../lib/date')
+const LoadProductsService = require('../services/loadProductService')
 
 
 module.exports = {
@@ -104,5 +105,12 @@ module.exports = {
                 error
             })
         }
+    },
+    async ads(req, res) {
+        const products = await LoadProductsService.load('products', {
+            where: { user_id: req.session.userId }
+        })
+
+        return res.render("user/ads", {products})
     }
 }

@@ -9,7 +9,7 @@
             <div class="product">                
                 <img class="image" src="{{product.img}}"> 
                 
-                {%if product.oldPrice !== product.price %}
+                {%if product.formattedOldPrice !== product.formattedPrice %}
                     <div class="old-price"> {{product.formattedOldPrice}}</div>
                 {%endif%}
                 <p>{{product.formattedPrice}}</p>
