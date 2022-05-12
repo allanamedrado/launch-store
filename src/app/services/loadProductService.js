@@ -30,13 +30,13 @@ async function format(product){
 }
 
 const LoadService = {
-    async load(service, filter) {
+    async load(service, filter) {        
         this.filter = filter
         return await this[service](filter)
     },
     async product(){
         try {
-            const product = await Products.findOne(this.filter)
+            const product = await Product.findOne(this.filter)
             return format(product)
 
         } catch (error) {
