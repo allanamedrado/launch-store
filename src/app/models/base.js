@@ -69,6 +69,10 @@ const Base = {
             console.log('erroB1', error)
         }
     },
+    async findOneWithDeleted(filters) {
+        const results = await find(filters, `${this.table}_with_deleted`)
+        return results.rows[0]
+    },
     update(id, fields) {
        let update = []
        

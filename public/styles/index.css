@@ -119,24 +119,26 @@ header .container a {
 
 /* PRIMARY MENU */
 
-nav.primary ul {
+nav.primary > ul {
     display: flex;
     justify-content: space-between;
     align-items: center;
 }
 
-nav.primary ul li a {
+nav.primary > ul > li > a {
     display: flex;
     align-items: center;
     color: white;
-}
-
-nav.primary ul li a:hover {
-    color: var(--primary-color);
+    height: 48px;
     transition: 200ms;
+
 }
 
-nav.primary ul li a i {
+nav.primary > ul > li > a:hover {
+    color: var(--primary-color);
+}
+
+nav.primary > ul > li > a > i {
     margin-right: 8px;
 }
 

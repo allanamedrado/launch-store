@@ -26,13 +26,13 @@
                         Novo anúncio
                     </a>
                 </li>
-                <li class="accounts">
+                <li class="dropdown-container">
                     <a href="/accounts">
                         <i class="material-icons">account_circle</i>
                         Minha conta
                     </a>
                     {%if session.userId %}
-                    <ul class="submenu"> 
+                    <ul class="dropdown"> 
                         <li>
                             <a href="/users">Minha conta</a>
                         </li>
@@ -42,7 +42,11 @@
                         </li>
 
                         <li>
-                            <a href="/selling">Minhas vendas</a>
+                            <a href="/orders">Meus pedidos</a>
+                        </li>
+
+                        <li>
+                            <a href="/orders/sales">Minhas vendas</a>
                         </li>
 
                         <li>
