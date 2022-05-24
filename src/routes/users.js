@@ -30,7 +30,6 @@ routes.delete('/', userController.delete)
 
 routes.get('/ads', userController.ads)
 
-routes.post('/orders', onlyUsers, orderController.post)
 
 
 module.exports = routes

@@ -55,6 +55,4 @@ const LoadService = {
     format,
 }
 
-LoadService.load('product', {where: {id:1}})
-
 module.exports = LoadService

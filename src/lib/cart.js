@@ -21,10 +21,7 @@ const Cart = {
 
         if(!inCart) {
             inCart = {
-                product: {
-                    ...product,
-                    formattedPrice: formatPrice(product.price)
-                },
+                ...product,                
                 quantity: 0,
                 price: 0,
                 formattedPrice: formatPrice(0)
