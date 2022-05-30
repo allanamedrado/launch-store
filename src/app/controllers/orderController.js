@@ -41,9 +41,7 @@ module.exports = {
             const filteredItems = cart.items.filter(item => {
                 return item.product.user_id !== buyer_id
             })
-            console.log('postCart', cart)
-            console.log('filtrado', filteredItems)
-
+   
             //criar o pedido
 
             const createOrdersPromise = filteredItems.map(async item => {
@@ -62,7 +60,6 @@ module.exports = {
                 })
 
                 //pegar dados do produto
-                console.log(item, 'itemm')
                 product = await LoadProductService.load('product', {where: {
                     id: product_id
                 }})

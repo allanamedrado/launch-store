@@ -41,9 +41,7 @@ module.exports = {
         const product = await LoadProductsService.load('product', {where: {
             id: req.params.id
         }})
-        
-        console.log('aqui', product)
-        
+            
         return res.render("products/show", {product, files: product.files})
     },
     async edit(req, res) {

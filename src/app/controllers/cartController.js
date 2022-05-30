@@ -4,11 +4,13 @@ const LoadProductService = require('../services/loadProductService')
 module.exports = {
     async index(req, res) {
         try {
-             let { cart } = req.session
+            let { cart } = req.session
 
             //gerenciador de carrinho
             cart = Cart.init(cart)
 
+            console.log(cart)
+            
             return res.render("cart/index", { cart })
         }
         catch(err) {
@@ -18,7 +20,7 @@ module.exports = {
     async addOne(req, res) {
         //pegar o id do produto e o produto
         const { id } = req.params;
-        const product = await LoadProductService.load('products', {where: {id}})
+        const product = await LoadProductService.load('product', {where: {id}})
 
         //pegar o carrinho da sessão
         let { cart } = req.session

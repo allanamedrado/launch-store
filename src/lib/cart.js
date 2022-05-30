@@ -21,15 +21,19 @@ const Cart = {
 
         if(!inCart) {
             inCart = {
-                ...product,                
+                product: {
+                    ...product,
+                    formattedPrice: formatPrice(product.price)
+                },                
                 quantity: 0,
-                price: 0,
-                formattedPrice: formatPrice(0)
+                price: 0, 
+                formattedPrice: formatPrice(0)               
             }
 
             this.items.push(inCart)
         } 
 
+        console.log(inCart)
         if (inCart.quantity >= product.quantity) return this
 
         inCart.quantity++
@@ -73,7 +77,7 @@ const Cart = {
             this.total.price -= (inCart.product.price * inCart.quantity)
             this.total.formattedPrice = formatPrice(this.total.price)
         }
-
+        
         this.items = this.items.filter(item => inCart.product.id !== item.product.id)
 
         return this

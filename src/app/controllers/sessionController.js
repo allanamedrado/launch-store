@@ -37,8 +37,7 @@ module.exports = {
 
             let now = new Date()
             now = now.setHours(now.getHours() + 1) 
-            console.log(user)
-    
+       
             await User.update(user.id, {
                 reset_token: token,
                 reset_token_expires: now

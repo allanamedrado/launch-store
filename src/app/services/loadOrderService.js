@@ -28,7 +28,7 @@ async function format(order) {
     }
 
     order.formattedStatus = statusUse[order.status]
-    const updatedAt = date(order.updatedAt)
+    const updatedAt = date(order.updated_at)
     order.formattedUpdatedAt = `${order.formattedStatus} em ${updatedAt.day}/${updatedAt.month}/${updatedAt.year} às ${updatedAt.hour}h${updatedAt.minutes}`
     
     return order
